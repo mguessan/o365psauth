@@ -96,7 +96,7 @@ Try
     # Prepare WebView2 Environment with default cache location
     $WebView2EnvironmentOptions = [Microsoft.Web.WebView2.Core.CoreWebView2EnvironmentOptions]::New()
     # Supposed to allow workplace authentication, does not seem to work
-    #$WebView2EnvironmentOptions.AllowSingleSignOnUsingOSPrimaryAccount = $TRUE
+    $WebView2EnvironmentOptions.AllowSingleSignOnUsingOSPrimaryAccount = $TRUE
     $WebView2Env = [Microsoft.Web.WebView2.Core.CoreWebView2Environment]::CreateAsync(
             [String]::Empty,[IO.Path]::Combine([String[]]([IO.Path]::GetTempPath(), 'O365WebView')),
             $WebView2EnvironmentOptions
