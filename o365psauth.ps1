@@ -135,6 +135,12 @@ Try
                     Write-Host $e.Uri
                     $MainForm.Close()
                 }
+                if ($e.Uri -match "error=")
+                {
+                    Write-Debug "Authentication failed"
+                    Write-Host $e.Uri
+                    $MainForm.Close()
+                }
                 Write-Debug("Navigate to " + $e.Uri)
             }
     )
