@@ -1,18 +1,18 @@
 # O365 logon script to create OIDC authentication code.
 # Inspired by https://gist.github.com/COFFEETALES
 
-Param ([String]$URL = 'https://login.microsoftonline.com/common/oauth2/authorize?client_id=d3590ed6-52b3-4102-aeff-aad2292ab01c&response_type=code&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_mode=query&resource=https%3A%2F%2Foutlook.office365.com', [String]$Mode = 'Default')
+Param (
+    [String]$URL = 'https://login.microsoftonline.com/common/oauth2/authorize?client_id=d3590ed6-52b3-4102-aeff-aad2292ab01c&response_type=code&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_mode=query&resource=https%3A%2F%2Foutlook.office365.com',
+    [String]$Mode = 'Default',
+    [switch]$SSO
+)
 
 # relaunch self with right options and working directory
 If ('Default' -ieq $Mode)
 {
     [String]$PowerShellPath = Get-Process -Id $PID | Select-Object -ExpandProperty Path
 
-    Start-Process `
-	  -Wait `
-	  -FilePath $PowerShellPath `
-	  -NoNewWindow `
-	  -ArgumentList (
+    $args = (
     '-NoLogo',
     '-NoProfile',
     '-NonInteractive',
@@ -20,6 +20,14 @@ If ('Default' -ieq $Mode)
     $URL,
     'WebView'
     )
+
+    if ($SSO.IsPresent) {$args += '-SSO'}
+
+    Start-Process `
+	  -Wait `
+	  -FilePath $PowerShellPath `
+	  -NoNewWindow `
+	  -ArgumentList $args
 }
 
 If ('WebView' -ine $Mode)
@@ -86,7 +94,7 @@ Try
     $WebView.Size = [Drawing.Size]::New(800, 600)
     $WebView.Anchor = [Windows.Forms.AnchorStyles]::Top -bor [Windows.Forms.AnchorStyles]::Right -bor [Windows.Forms.AnchorStyles]::Bottom -bor [Windows.Forms.AnchorStyles]::Left
 
-    ([ComponentModel.ISupportInitialize]$WebView).EndInit()
+            ([ComponentModel.ISupportInitialize]$WebView).EndInit()
 
     $MainForm.Controls.Add($WebView)
 
@@ -95,8 +103,8 @@ Try
 
     # Prepare WebView2 Environment with default cache location
     $WebView2EnvironmentOptions = [Microsoft.Web.WebView2.Core.CoreWebView2EnvironmentOptions]::New()
-    # Supposed to allow workplace authentication, does not seem to work
-    $WebView2EnvironmentOptions.AllowSingleSignOnUsingOSPrimaryAccount = $TRUE
+    # use native OS authentication, requires latest webview2 version
+    $WebView2EnvironmentOptions.AllowSingleSignOnUsingOSPrimaryAccount = $SSO.IsPresent
     $WebView2Env = [Microsoft.Web.WebView2.Core.CoreWebView2Environment]::CreateAsync(
             [String]::Empty,[IO.Path]::Combine([String[]]([IO.Path]::GetTempPath(), 'O365WebView')),
             $WebView2EnvironmentOptions

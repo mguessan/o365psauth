@@ -1,4 +1,6 @@
 
+[![Downloads](https://img.shields.io/github/downloads/mguessan/o365psauth/total.svg)]()
+
 # o365psauth
 Powershell script to initiate Office 365 (Microsoft 365) authentication
 
@@ -12,6 +14,9 @@ Usage:
 
 - Authenticate with default url, clientId and redirect_uri:
   `.\o365psauth.ps1`
+
+- Authenticate using native OS authentication (workplace join):
+  `.\o365psauth.ps1 -SSO`
 
 - Use the provided url to authenticate on a specific application:
   `.\o365psauth.ps1 -url https://login.microsoftonline.com/common/oauth2/authorize?client_id=XXXXXXXXXX&response_type=code&redirect_uri=XXXXXXXXXX&response_mode=query&resource=https%3A%2F%2Foutlook.office365.com`
