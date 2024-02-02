@@ -21,6 +21,10 @@ Usage:
 - Use the provided url to authenticate on a specific application:
   `.\o365psauth.ps1 -url https://login.microsoftonline.com/common/oauth2/authorize?client_id=XXXXXXXXXX&response_type=code&redirect_uri=XXXXXXXXXX&response_mode=query&resource=https%3A%2F%2Foutlook.office365.com`
 
+- In addition, you can retrieve the actual OIDC token:
+  `.\o365psauth.ps1 -Token`
+  `.\o365psauth.ps1 -SSO -Token`
+
 ## Prerequisites
 Just retrieve the script and WebView2 runtime from https://github.com/mguessan/o365psauth or use the script with a 
 locally installed runtime, see https://developer.microsoft.com/en-us/microsoft-edge/webview2

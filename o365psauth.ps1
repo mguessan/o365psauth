@@ -4,7 +4,8 @@
 Param (
     [String]$URL = 'https://login.microsoftonline.com/common/oauth2/authorize?client_id=d3590ed6-52b3-4102-aeff-aad2292ab01c&response_type=code&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_mode=query&resource=https%3A%2F%2Foutlook.office365.com',
     [String]$Mode = 'Default',
-    [switch]$SSO
+    [switch]$SSO,
+    [switch]$Token
 )
 
 # relaunch self with right options and working directory
@@ -21,7 +22,14 @@ If ('Default' -ieq $Mode)
     'WebView'
     )
 
-    if ($SSO.IsPresent) {$args += '-SSO'}
+    if ($SSO.IsPresent)
+    {
+        $args += '-SSO'
+    }
+    if ($Token.IsPresent)
+    {
+        $args += '-Token'
+    }
 
     Start-Process `
 	  -Wait `
@@ -33,6 +41,31 @@ If ('Default' -ieq $Mode)
 If ('WebView' -ine $Mode)
 {
     Return
+}
+
+function Get-URL-Parameter()
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string] $URL,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [string] $param
+    )
+
+    $start = $URL.indexOf($param + '=')
+    $value = $URL.Substring($start + $param.Length + 1)
+    $end = $value.indexOf('&')
+
+    if ($end -ge 0)
+    {
+        return [system.uri]::UnescapeDataString($value.Substring(0, $end))
+    }
+    else
+    {
+        return [system.uri]::UnescapeDataString($value)
+    }
+
 }
 
 Try
@@ -140,8 +173,42 @@ Try
                 if ($e.Uri -match "code=")
                 {
                     Write-Debug "Authentication succeeded received code"
-                    Write-Host $e.Uri
-                    $MainForm.Close()
+
+                    Try
+                    {
+                        if ($Token)
+                        {
+                            Write-Debug "Retrieving token from code"
+                            $tokenuri = $URL.substring(0,$URL.indexOf('/authorize')) + '/token'
+
+                            $body = @{
+                                grant_type = 'authorization_code'
+                                client_id = (Get-URL-Parameter $URL 'client_id')
+                                redirect_uri = (Get-URL-Parameter $URL 'redirect_uri')
+                                code = (Get-URL-Parameter $e.Uri 'code')
+                            }
+
+                            Write-Debug 'Invoke token request'
+                            $tokenResponse = try
+                            {
+                                (Invoke-WebRequest -Method POST -Uri $tokenuri -body $body -ContentType 'application/x-www-form-urlencoded').Content
+                            }
+                            catch [System.Net.WebException]
+                            {
+                                Write-Host "Exception trying to retrieve token $( $_.Exception.Message )"
+                                $_.Exception.Response.Content
+                            }
+                            Write-Host $tokenResponse
+                        }
+                        else
+                        {
+                            Write-Host $e.Uri
+                        }
+                    }
+                    Finally
+                    {
+                        $MainForm.Close()
+                    }
                 }
                 if ($e.Uri -match "error=")
                 {
