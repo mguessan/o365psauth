@@ -1,5 +1,5 @@
 
-[![Downloads](https://img.shields.io/github/downloads/mguessan/o365psauth/total.svg)]()
+[![Downloads](https://img.shields.io/github/downloads/mguessan/o365psauth/total.svg)](https://github.com/mguessan/o365psauth/releases)
 
 # o365psauth
 Powershell script to initiate Office 365 (Microsoft 365) authentication
