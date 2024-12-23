@@ -6,3 +6,7 @@ configuration:
 
 build_script: 
   - cmd: dotnet publish O365Auth -r win-x64 -c Release /p:PublishSingleFile=true
+
+artifacts:
+  - path: O365Auth/bin/Release/net8.0-windows/win-x64/publish/*.exe
+
