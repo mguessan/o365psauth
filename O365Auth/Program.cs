@@ -14,15 +14,17 @@ class O365Auth
     private static void Main()
     {
         // enable single sign on with windows user session
-        bool isSso = true;
+        bool isSso = false;
         // retrieve token from code
         bool isGetToken = false;
+        
+        // Build default url
         
         // Outlook clientId/redirectUri
         string clientId = "d3590ed6-52b3-4102-aeff-aad2292ab01c";
         string redirectUri = "urn:ietf:wg:oauth:2.0:oob";
         string resource = "https://outlook.office365.com";
-
+        
         // main microsoft login url
         string baseUrl = "https://login.microsoftonline.com/common/oauth2/authorize";
         
@@ -35,6 +37,25 @@ class O365Auth
         queryString.Add("resource", resource);
 
         string url = baseUrl+"?"+queryString;
+
+        String[] commandLineArgs = Environment.GetCommandLineArgs();
+        for (int i = 0; i < commandLineArgs.Length; i++)
+        {
+            String arg = commandLineArgs[i];
+            if ("-SSO".Equals(arg, StringComparison.InvariantCultureIgnoreCase))
+            {
+                isSso = true;
+            }
+            else if ("-Token".Equals(arg, StringComparison.InvariantCultureIgnoreCase))
+            {
+                isGetToken = true;
+            }
+            else if (arg.StartsWith("https://"))
+            {
+                // override url
+                url = arg;
+            }
+        }
 
         int clientWidth = 800;
         int clientHeight = 600;
