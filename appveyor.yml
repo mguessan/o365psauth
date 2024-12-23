@@ -4,5 +4,5 @@ image: Visual Studio 2022
 configuration:
   - Release
 
-install:
-  - cmd: nuget restore O365Auth
+build_script: 
+  - cmd: dotnet publish O365Auth -r win-x64 -c Release /p:PublishSingleFile=true
