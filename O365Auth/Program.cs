@@ -157,6 +157,8 @@ class O365Auth
                         catch (WebException webException)
                         {
                             Console.WriteLine($"Exception trying to retrieve token ${webException.Response}");
+                        } catch (Exception exception) {
+                            Console.WriteLine($"Exception trying to retrieve token ${exception.Message}");
                         }
                     }
                     else
