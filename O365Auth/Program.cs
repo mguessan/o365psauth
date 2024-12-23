@@ -190,7 +190,7 @@ class O365Auth
             settings.AreHostObjectsAllowed = false;
             settings.IsBuiltInErrorPageEnabled = false;
             settings.IsScriptEnabled = true;
-            settings.IsStatusBarEnabled = true;
+            settings.IsStatusBarEnabled = false;
             settings.IsWebMessageEnabled = false;
             settings.IsZoomControlEnabled = true;
         }
