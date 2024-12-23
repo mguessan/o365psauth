@@ -1,8 +1,9 @@
 
-[![Downloads](https://img.shields.io/github/downloads/mguessan/o365psauth/total.svg)](https://github.com/mguessan/o365psauth/releases)
 
 # o365psauth
-Powershell script to initiate Office 365 (Microsoft 365) authentication
+Powershell script to initiate Office 365 (Microsoft 365) authentication.
+
+Another C# based version is available under O365Auth directory
 
 ## Description
 Script goal is to let user proceed with O365 authentication, including MFA, and retrieve the OIDC code that can be later
@@ -30,7 +31,10 @@ Just retrieve the script and WebView2 runtime from https://github.com/mguessan/o
 locally installed runtime, see https://developer.microsoft.com/en-us/microsoft-edge/webview2
 
 ## Build
-Nothing to build, this is just a script
+Powershell version: Nothing to build, this is just a script
+
+CSharp version:
+`dotnet publish -r win-x64 -c Release /p:PublishSingleFile=true`
 
 ## Reference
 
