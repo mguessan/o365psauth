@@ -5,4 +5,4 @@ configuration:
   - Release
 
 install:
-  - cmd: nuget restore
+  - cmd: nuget restore O365Auth
