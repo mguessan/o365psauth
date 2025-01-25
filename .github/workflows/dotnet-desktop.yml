@@ -46,4 +46,4 @@ jobs:
         # Artifact name
         name: O365Auth
         path: O365Auth/bin/Release/net8.0-windows/win-x64/publish/*.exe
-      target: O365Auth
+        target: O365Auth
