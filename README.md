@@ -11,7 +11,7 @@ Another C# based version is available under O365Auth directory
 This package contains actual Powershell script and Webview2 dependencies.
 
 - Dotnet C# version built by Github actions:
-  [O365Auth.zip](https://github.com/mguessan/o365psauth/actions/runs/12966688317/artifacts/2485345501)
+  [O365Auth.zip](https://github.com/mguessan/o365psauth/releases/download/1.2/O365Auth.zip)
   
 
 Standalone O365Auth.exe
