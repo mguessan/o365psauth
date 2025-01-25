@@ -42,7 +42,14 @@ class O365Auth
         for (int i = 0; i < commandLineArgs.Length; i++)
         {
             String arg = commandLineArgs[i];
-            if ("-SSO".Equals(arg, StringComparison.InvariantCultureIgnoreCase))
+            if ("-Help".Equals(arg, StringComparison.InvariantCultureIgnoreCase))
+            {
+                Console.WriteLine("Usage: O365Auth [-Help] [-SSO] [-Token] [Uri]");
+                Console.WriteLine("-SSO: use current user context for authentication");
+                Console.WriteLine("-Token: exchange code for token");
+                Console.WriteLine("Uri: override default 0365 logon uri");
+            }
+            else if ("-SSO".Equals(arg, StringComparison.InvariantCultureIgnoreCase))
             {
                 isSso = true;
             }
