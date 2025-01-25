@@ -39,6 +39,11 @@ Usage:
 
 Standalone O365Auth provides the same options, just replace .\o365psauth.ps1 with O365Auth.
 
+- Full example in Powershell to retrieve refresh token:
+```
+(.\O365Auth.exe -Token -SSO | ConvertFrom-Json).refresh_token
+```
+
 ## Prerequisites
 Just retrieve the script and WebView2 runtime from https://github.com/mguessan/o365psauth or use the script with a
 locally installed runtime, see https://developer.microsoft.com/en-us/microsoft-edge/webview2
