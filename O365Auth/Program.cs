@@ -140,6 +140,7 @@ class O365Auth
                                           "/token";
                         using HttpClient client = new();
                         client.BaseAddress = new Uri(tokenUri);
+                        client.Timeout = TimeSpan.FromSeconds(30);
 
                         // get code from uri
                         String codeQueryString = new Uri(e.Uri).Query;
@@ -156,9 +157,10 @@ class O365Auth
 
                         try
                         {
+                            Debug.WriteLine("Retrieving token from code at "+tokenUri);
                             HttpResponseMessage response = await client.PostAsync(tokenUri, httpContent);
-                            response.EnsureSuccessStatusCode();
-                            string jsonResponse = await response.Content.ReadAsStringAsync();
+                            Debug.WriteLine("Status: "+response.StatusCode);
+                            string jsonResponse = response.Content.ReadAsStringAsync().Result;
                             Console.WriteLine(jsonResponse);
                         }
                         catch (WebException webException)
